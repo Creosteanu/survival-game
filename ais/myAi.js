@@ -1,23 +1,36 @@
 'use strict';
 
 
-var ai = function* (cell) {
+var smartAi = function* (cell) {
 
     while (true) {
 
-        var cellInFront = yield cell.scan();
+
+
+        var cellInFront = cell.scan();
 
         if (cellInFront)  {
 
-            yield cell.attack();
+            if(cell.id !== cellInFront)
+            {
 
-        }
+                yield cell.attack();
+
+            } else { 
+
+                yield cell.turnLeft();
+
+            }
+
+        } 
         
-        if (cell.energy > 200) {
+        if (cell.energy > 10) {
 
             yield cell.reproduce();
 
         }
+
+        yield cell.photosynthesis();
 
 
 
@@ -26,4 +39,4 @@ var ai = function* (cell) {
 };
 
 
-module.exports = ai;
+module.exports = smartAi;
