@@ -2,6 +2,8 @@
 
 var ais = require('./helpers/aiLoader');
 
+var systemCells = [];
+
 class CellInterface {
     constructor(id, energy) {
         this.id = id;
@@ -31,10 +33,6 @@ class CellInterface {
     reproduce() {
         return 'reproduce';
     }
-
-    scan() {
-        return 'scan';
-    }
 }
 
 class Cell {
@@ -48,6 +46,19 @@ class Cell {
         this.x = x;
         this.y = y;
         this.facing = 0;
+
+        this.exposeScan();
+
+    }
+
+    exposeScan() {
+
+        var self = this;
+        this.cellInterface.scan = function () {
+
+            return self.scan();
+
+        };
 
     }
 
@@ -80,7 +91,7 @@ class Cell {
 
     }
 
-    cellAt(position, systemCells) {
+    cellAt(position) {
 
         return systemCells.find(function (cell) {
 
@@ -109,10 +120,10 @@ class Cell {
 
     }
 
-    move(systemCells) {
+    move() {
 
         var positionInFront = this.getPositionInFront();
-        var positionOccupied = this.cellAt(positionInFront, systemCells);
+        var positionOccupied = this.cellAt(positionInFront);
 
         if (!positionOccupied) {
             this.x = positionInFront.x;
@@ -121,10 +132,10 @@ class Cell {
 
     }
 
-    attack(systemCells) {
+    attack() {
 
         var positionInFront = this.getPositionInFront();
-        var cellInFront = this.cellAt(positionInFront, systemCells);
+        var cellInFront = this.cellAt(positionInFront);
 
         if (cellInFront) {
             var energyStolen = Math.min(cellInFront.energy, 100);
@@ -134,24 +145,24 @@ class Cell {
 
     }
 
-    reproduce(systemCells) {
+    reproduce() {
 
         var positionInFront = this.getPositionInFront();
-        var positionOccupied = this.cellAt(positionInFront, systemCells);
+        var positionOccupied = this.cellAt(positionInFront);
 
         if (!positionOccupied) {
             var cell = new Cell(this.id, this.energy / 2, this.generator, positionInFront.x, positionInFront.y);
-            this.energy /= 2;
             systemCells.push(cell);
+            this.energy /= 2;
         }
 
 
     }
 
-    scan(systemCells) {
+    scan() {
 
         var positionInFront = this.getPositionInFront();
-        var cellInFront = this.cellAt(positionInFront, systemCells);
+        var cellInFront = this.cellAt(positionInFront);
 
         if (cellInFront) {
             return cellInFront.id;
@@ -165,8 +176,6 @@ class Cell {
 
 try {
 
-    var systemCells = [];
-
     ais.forEach(function (ai, index) {
 
         var cell = new Cell(ai.name, 100, ai.generator, 0, index * 10);
@@ -174,7 +183,7 @@ try {
 
     });
 
-    for (var turn = 0; turn < 1000; turn++) {
+    for (var turn = 0; turn < 100; turn++) {
 
         console.log('Processing turn:', turn);
         systemCells.forEach(function (cell) {
@@ -200,9 +209,7 @@ try {
 
         console.log('Killing cells');
         systemCells = systemCells.filter(function (cell) {
-
             return cell.energy > 0;
-
         });
 
         console.log(systemCells.length);
