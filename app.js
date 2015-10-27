@@ -3,6 +3,23 @@
 var ais = require('./helpers/aiLoader');
 
 var systemCells = [];
+var map = [];
+
+var addCellInMap = function (cell) {
+
+    if (!map[cell.x]) {
+        map[cell.x] = [];
+    }
+
+    map[cell.x][cell.y] = cell;
+
+};
+
+var getCellAtPosition = function(x,y) {
+
+    return map[x] ? map[x][y] : undefined;
+
+};
 
 class CellInterface {
     constructor(id, energy) {
@@ -46,6 +63,8 @@ class Cell {
         this.x = x;
         this.y = y;
         this.facing = 0;
+
+        addCellInMap(this);
 
         this.exposeScan();
 
@@ -93,11 +112,7 @@ class Cell {
 
     cellAt(position) {
 
-        return systemCells.find(function (cell) {
-
-            return cell.x === position.x && cell.y === position.y;
-
-        });
+        return getCellAtPosition(position.x, position.y);
 
     }
 
@@ -126,8 +141,10 @@ class Cell {
         var positionOccupied = this.cellAt(positionInFront);
 
         if (!positionOccupied) {
+            delete map[this.x][this.y];
             this.x = positionInFront.x;
             this.y = positionInFront.y;
+            addCellInMap(this);
         }
 
     }
@@ -183,7 +200,7 @@ try {
 
     });
 
-    for (var turn = 0; turn < 100; turn++) {
+    for (var turn = 0; turn < 10; turn++) {
 
         console.log('Processing turn:', turn);
         systemCells.forEach(function (cell) {
