@@ -168,9 +168,9 @@ class Cell {
         var positionOccupied = this.cellAt(positionInFront);
 
         if (!positionOccupied) {
-            var cell = new Cell(this.id, this.energy / 2, this.generator, positionInFront.x, positionInFront.y);
+            var cell = new Cell(this.id, Math.floor(this.energy / 2), this.generator, positionInFront.x, positionInFront.y);
             systemCells.push(cell);
-            this.energy /= 2;
+            this.energy = Math.floor( this.energy / 2);
         }
 
 
@@ -200,7 +200,7 @@ try {
 
     });
 
-    for (var turn = 0; turn < 10; turn++) {
+    for (var turn = 0; turn < 1000; turn++) {
 
         console.log('Processing turn:', turn);
         systemCells.forEach(function (cell) {
@@ -210,7 +210,7 @@ try {
                 var action = cell.ai.next();
 
                 if (typeof cell[action.value] === 'function') {
-                    cell[action.value](systemCells);
+                    cell[action.value]();
                 }
 
             } catch (e) {
