@@ -53,7 +53,7 @@ class CellInterface {
 }
 
 class Cell {
-    constructor(id, energy, ai, x, y) {
+    constructor(id, energy, ai, x, y, facing) {
 
         this.id = id;
         this.energy = energy;
@@ -203,7 +203,7 @@ try {
 
     });
 
-    for (var turn = 0; turn < 1000; turn++) {
+    for (var turn = 0; turn < 100; turn++) {
 
         console.log('Processing turn:', turn);
         systemCells.forEach(function (cell) {
