@@ -15,7 +15,7 @@ var addCellInMap = function (cell) {
 
 };
 
-var getCellAtPosition = function(x,y) {
+var getCellAtPosition = function (x, y) {
 
     return map[x] ? map[x][y] : undefined;
 
@@ -158,6 +158,8 @@ class Cell {
             var energyStolen = Math.min(cellInFront.energy, 100);
             this.energy += energyStolen;
             cellInFront.energy -= energyStolen;
+            this.resetInterface();
+            cellInFront.resetInterface();
         }
 
     }
@@ -170,7 +172,8 @@ class Cell {
         if (!positionOccupied) {
             var cell = new Cell(this.id, Math.floor(this.energy / 2), this.generator, positionInFront.x, positionInFront.y);
             systemCells.push(cell);
-            this.energy = Math.floor( this.energy / 2);
+            this.energy = Math.floor(this.energy / 2);
+            this.resetInterface();
         }
 
 
@@ -222,6 +225,7 @@ try {
         console.log('Consuming energy');
         systemCells.forEach(function (cell) {
             cell.energy--;
+            cell.resetInterface();
         });
 
         console.log('Killing cells');
