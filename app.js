@@ -231,15 +231,15 @@ try {
             return cell.energy > 0;
         });
 
+        var score = [];
+
+        systemCells.forEach(function (cell) {
+            score[cell.id] = score[cell.id] ? score[cell.id] + 1 : 1;
+        });
+
+        console.log(score);
     }
 
-    var score = [];
-
-    systemCells = systemCells.forEach(function (cell) {
-        score[cell.id] = score[cell.id] ? score[cell.id] + 1 : 1;
-    });
-
-    console.log(score);
 
 } catch (e) {
     console.log('System exception', e);
