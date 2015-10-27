@@ -4,8 +4,7 @@
 var smartAi = function* (cell) {
 
     while (true) {
-
-
+        var attackedLa
 
         var cellInFront = cell.scan();
 
@@ -23,6 +22,7 @@ var smartAi = function* (cell) {
             }
 
         } 
+
         
         if (cell.energy > 10) {
 
@@ -30,7 +30,9 @@ var smartAi = function* (cell) {
 
         }
 
+
         yield cell.photosynthesis();
+        yield cell.move();
 
 
 
