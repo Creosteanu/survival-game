@@ -6,7 +6,9 @@ var ai = function* (cell) {
     while (true) {
 
         yield cell.photosynthesis();
-        console.log(cell.energy);
+        yield cell.photosynthesis();
+        yield cell.turnLeft();
+        yield cell.reproduce();
 
     }
 
