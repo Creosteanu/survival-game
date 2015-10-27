@@ -219,19 +219,23 @@ try {
 
         });
 
-        console.log('Consuming energy');
         systemCells.forEach(function (cell) {
             cell.energy--;
         });
 
-        console.log('Killing cells');
         systemCells = systemCells.filter(function (cell) {
             return cell.energy > 0;
         });
 
-        console.log(systemCells.length);
-
     }
+
+    var score = [];
+
+    systemCells = systemCells.forEach(function (cell) {
+        score[cell.id] = score[cell.id] ? score[cell.id] + 1 : 1;
+    });
+
+    console.log(score);
 
 } catch (e) {
     console.log('System exception', e);
