@@ -3,14 +3,15 @@
 
 var smartAi = function* (cell) {
 
+    var cells = [];
+
     while (true) {
-        var attackedLa
 
         var cellInFront = cell.scan();
 
         if (cellInFront)  {
 
-            if(cell.id !== cellInFront)
+            if( cell.id !== cellInFront )
             {
 
                 yield cell.attack();
@@ -22,17 +23,17 @@ var smartAi = function* (cell) {
             }
 
         } 
-
         
         if (cell.energy > 10) {
 
             yield cell.reproduce();
+            yield cell.move();
 
         }
 
 
-        yield cell.photosynthesis();
         yield cell.move();
+        yield cell.photosynthesis();
 
 
 
